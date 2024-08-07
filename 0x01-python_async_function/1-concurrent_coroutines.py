@@ -3,7 +3,8 @@
 python file on tasks about asyncio module
 """
 import asyncio
-from main import wait_random
+wait_random_module = __import__('0-basic_async_syntax')
+wait_random = wait_random_module.wait_random
 
 
 async def wait_n(n: int, max_delay: int) -> list:
