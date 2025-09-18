@@ -62,14 +62,20 @@ class TestMemoize(unittest.TestCase):
         """test if the cahed value matches"""
 
         class TestClass:
-            """Test that memoization caches the result"""
+            """
+            Test that memoization caches the result
+            """
             def a_method(self):
-                """"""
+                """
+                the method to be tested
+                """
                 return 42
 
             @utils.memoize
             def a_property(self):
-                """return the method called"""
+                """
+                return the method called
+                """
                 return self.a_method()
         with patch.object(
                 TestClass, "a_method", return_value=42
