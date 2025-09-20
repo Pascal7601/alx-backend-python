@@ -18,7 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
         tests whether the return value of get_json is as
         expected
         """
-        api = "https://api.github.com/orgs/"
+        api = "https://api.github.com/orgs"
         org = client.GithubOrgClient(org_name)
         expected = {"payload": True}
         mock_get.return_value = expected
