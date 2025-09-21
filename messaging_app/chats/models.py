@@ -26,7 +26,7 @@ class User(AbstractUser):
 
 class Conversation(models.Model):
     conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, db_index=True)
-    partcipants_id = models.ManyToManyField(User, related_name="conversation")
+    partcipants = models.ManyToManyField(User, related_name="conversation")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
