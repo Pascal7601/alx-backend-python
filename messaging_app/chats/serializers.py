@@ -5,7 +5,7 @@ from .models import Message, Conversation, User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = "password"
+        exclude = ["password"]
 
 class MessageSerializer(serializers.ModelSerializer):
 

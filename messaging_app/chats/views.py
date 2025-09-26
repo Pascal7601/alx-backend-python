@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .models import Conversation, Message
 from .serializers import MessageSerializer, CoversationSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 
 
 class MessageViewSet(viewsets.ModelViewSet):
