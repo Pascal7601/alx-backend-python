@@ -4,7 +4,7 @@ from .models import Message
 class MessageFilter(django_filters.FilterSet):
     # filter by sender’s user_id
     sender = django_filters.UUIDFilter(field_name="sender__user_id", lookup_expr="exact")
-    
+    recipient = django_filters.NumberFilter(field_name='conversation__participants__id')
     # filter by messages sent after a certain datetime
     sent_after = django_filters.IsoDateTimeFilter(field_name="sent_at", lookup_expr="gte")
     
@@ -13,4 +13,4 @@ class MessageFilter(django_filters.FilterSet):
     
     class Meta:
         model = Message
-        fields = ["sender", "sent_after", "sent_before"]
+        fields = ["sender","recipient", "sent_after", "sent_before"]

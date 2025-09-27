@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "Messaging App API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Get JWT Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"yourpassword\"\n}"
+        },
+        "url": { "raw": "http://localhost:8000/api/token/", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api", "token"] }
+      }
+    },
+    {
+      "name": "Create Conversation",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"participants\": [\"uuid-of-user1\", \"uuid-of-user2\"]\n}"
+        },
+        "url": { "raw": "http://localhost:8000/api/conversations/", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api", "conversations/"] }
+      }
+    },
+    {
+      "name": "Send Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"conversation\": \"uuid-of-conversation\",\n  \"message_body\": \"Hello, how are you?\"\n}"
+        },
+        "url": { "raw": "http://localhost:8000/api/messages/", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api", "messages/"] }
+      }
+    },
+    {
+      "name": "Get Messages by Conversation",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://localhost:8000/api/messages/?conversation=uuid-of-conversation", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api", "messages/"], "query": [{ "key": "conversation", "value": "uuid-of-conversation" }] }
+      }
+    },
+    {
+      "name": "Get Conversations",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": { "raw": "http://localhost:8000/api/conversations/", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api", "conversations/"] }
+      }
+    },
+    {
+      "name": "Unauthorized Test",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8000/api/conversations/", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api", "conversations/"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "jwt_token", "value": "" }
+  ]
+}

@@ -13,7 +13,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
     permission_classes = [IsAuthenticatedUser, IsMessageOwnerOrReadOnly, IsPartOfConversation]
-    pagination_class = [MessagePagination]
+    pagination_class = MessagePagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = [MessageFilter]
 
