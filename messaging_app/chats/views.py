@@ -4,13 +4,19 @@ from .models import Conversation, Message
 from .serializers import MessageSerializer, CoversationSerializer
 from .permissions import IsAuthenticatedUser, IsMessageOwnerOrReadOnly, IsPartOfConversation
 from rest_framework.response import Response
-
+from .pagination import MessagePagination
+from .filters import MessageFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     queryset = Message.objects.all()
     permission_classes = [IsAuthenticatedUser, IsMessageOwnerOrReadOnly, IsPartOfConversation]
+    pagination_class = [MessagePagination]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = [MessageFilter]
+
 
     def get_queryset(self):
         # only return conversations that the user is part of
