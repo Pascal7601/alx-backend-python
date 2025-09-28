@@ -1,7 +1,7 @@
 from django.core.exceptions import PermissionDenied
 import datetime
 import time
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 
 
 class RequestLoggingMiddleware:
@@ -76,5 +76,25 @@ class OffensiveLanguageMiddleware:
             # Add current timestamp and save back
             timestamps.append(now)
             self.requests[ip_addr] = timestamps
+
+        return self.get_response(request)
+    
+class RolepermissionMiddleware:
+    """
+    checks the user’s role i.e admin,
+    before allowing access to specific actions
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Only check when accessing /admin/
+        if request.path.startswith("/admin/"):
+            if request.user.is_authenticated:
+                # Example with built-in flags
+                if not (request.user.is_superuser or request.user.is_staff):
+                    return HttpResponseForbidden("You do not have permission to access admin.")
+            else:
+                return HttpResponseForbidden("You must be logged in to access admin.")
 
         return self.get_response(request)
