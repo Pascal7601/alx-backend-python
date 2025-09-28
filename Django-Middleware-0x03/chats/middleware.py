@@ -21,4 +21,22 @@ class RequestLoggingMiddleware:
 
         return response
 
-        
+
+class RestrictAccessByTimeMiddleware:
+    """
+    restricts access to the messaging up during certain
+    hours of the day ( outside 9PM and 6PM.)
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+    
+    def __call__(self, request):
+        current_time = datetime.datetime.now().time()
+        hour = current_time.hour
+        if not (18 <= hour > 21):
+            raise PermissionDenied("Access denied at this time")
+
+        response = self.get_response(request)
+
+        return response
