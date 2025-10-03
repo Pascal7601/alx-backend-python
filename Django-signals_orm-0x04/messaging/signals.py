@@ -9,5 +9,5 @@ def create_notification(sender, instance, created, **kwargs):
     creates a new notification for every message instance
     """
     if created:
-        Notification.objects.create(message=instance)
+        Notification.objects.create(message=instance, user=instance.receiver)
 
