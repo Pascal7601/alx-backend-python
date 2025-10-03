@@ -9,6 +9,7 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
     edited_by = models.ForeignKey(User,null=True, blank=True, on_delete=models.CASCADE, related_name="edited_messages")
+    edited_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"message from {self.sender.username} to {self.receiver.username}"

@@ -1,6 +1,8 @@
 from django.dispatch import receiver
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from .models import Message, Notification, MessageHistory
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 @receiver(post_save, sender=Message)
@@ -32,3 +34,21 @@ def log_previous_edited_msg(sender, instance, **kwargs):
             # updating the is_edited to True
             instance.is_edited = True
             instance.edited_by = instance.sender
+
+@receiver(post_delete, sender=User)
+def delete_all_user_related(sender, instance, **kwargs):
+    """
+    deletes all notification, messages and message history when
+    the user is deleted
+    """ 
+    Message.objects.filter(
+        Q(sender=instance) | Q(receiver=instance)
+    ).delete()
+
+    Notification.objects.filter(
+        user=instance
+    ).delete()
+
+    MessageHistory.objects.filter(
+        Q(message__sender=instance) | Q(message__receiver=instance)
+    ).delete()
