@@ -4,6 +4,7 @@ from .models import Message
 from .permissions import UserWriteOrReadOnly
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.response import Response
+from django.db.models import Q
 
 
 @api_view(['POST'])
@@ -17,3 +18,15 @@ def delete_user(request):
         user.delete()
     
     return Response({"detail": "user succesfully deleted"})
+
+@api_view(["GET"])
+@permission_classes([UserWriteOrReadOnly])
+def fetch_messages(request):
+    """
+    fetch all the messages and replies for specific users
+    """
+    msg = Message.objects.filter(
+            Q(sender=request.user) | Q(receiver=request.user), parent_message__is_null=True
+        ).select_related("sender", "receiver").prefetch_related("replies__sender", "replies__receiver")
+
+    return msg

@@ -10,8 +10,13 @@ class Message(models.Model):
     edited = models.BooleanField(default=False)
     edited_by = models.ForeignKey(User,null=True, blank=True, on_delete=models.CASCADE, related_name="edited_messages")
     edited_at = models.DateTimeField(auto_now=True)
+    parent_message = models.ForeignKey(
+        "self", null=True, blank=True, related_name="replies", on_delete=models.CASCADE
+    )
 
     def __str__(self):
+        if self.parent_message:
+            return f"{self.sender.username} sent a reply to {self.receiver.username}"
         return f"message from {self.sender.username} to {self.receiver.username}"
     
 class Notification(models.Model):
