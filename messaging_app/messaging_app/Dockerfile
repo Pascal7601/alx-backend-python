@@ -2,7 +2,7 @@ FROM python:3.10-alpine
 
 WORKDIR /app
 
-COPY Requirements.txt .
+COPY requirements.txt .
 
 RUN pip install -r Requirements.txt
 
