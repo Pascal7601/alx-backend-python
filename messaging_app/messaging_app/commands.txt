@@ -1,0 +1,45 @@
+This file contains the commands to install and configure the Nginx Ingress
+
+controller for the Django application on a minikube cluster.
+
+1. Install the Nginx Ingress controller
+
+For minikube, this is done by enabling the 'ingress' addon.
+
+minikube addons enable ingress
+
+2. Apply the Ingress resource configuration
+
+This command reads the ingress.yaml file and creates the Ingress resource
+
+in your Kubernetes cluster, which sets up the routing rules.
+
+kubectl apply -f ingress.yaml
+
+3. Verify that the Ingress resource was created
+
+kubectl get ingress
+
+4. Access your application
+
+To access the app using the hostname 'django-app.local', you need to
+
+map the minikube IP to this hostname in your local machine's hosts file.
+
+First, get the IP address of your minikube cluster:
+
+minikube ip
+
+Next, add an entry to your system's hosts file.
+
+On macOS/Linux, this file is located at /etc/hosts
+
+On Windows, it is at C:\Windows\System32\drivers\etc\hosts
+
+Add the following line, replacing MINIKUBE_IP with the actual IP from the command above:
+
+MINIKUBE_IP   django-app.local
+
+Now you can access your Django application in a web browser at:
+
+http://django-app.local/

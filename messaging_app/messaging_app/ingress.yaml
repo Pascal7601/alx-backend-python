@@ -1,0 +1,30 @@
+# This YAML file defines the Ingress resource for routing external traffic
+# to the Django messaging app's service.
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: django-app-ingress
+  annotations:
+    # This annotation is important for specifying the Ingress controller to use.
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  # The Ingress Class specifies which Ingress controller should implement this Ingress.
+  # 'nginx' is the class name for the Nginx Ingress controller.
+  ingressClassName: nginx
+  rules:
+  # You can define multiple rules for different hosts or domains.
+  - host: django-app.local # A placeholder hostname for local testing.
+    http:
+      paths:
+      # You can define multiple paths to route to different services.
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # This must match the name of your Service defined in deployment.yaml.
+            name: django-app-service
+            port:
+              # The port number of the service to route traffic to.
+              number: 80
+
