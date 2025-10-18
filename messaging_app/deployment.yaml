@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app-deployment
+  labels:
+    app: django-messaging-app
+spec:
+  # Specifies that we want 3 running pods of our application
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django-messaging-app
+  template:
+    # This is the template for the pods that will be created.
+    metadata:
+      labels:
+        # The labels applied to each pod.
+        app: django-messaging-app
+    spec:
+      containers:
+      - name: django-app
+        # IMPORTANT: Replace this with your actual Docker image name and tag.
+        # This is the image that Kubernetes will pull and run.
+        image: ndubieze/django-messaging-app:latest
+        ports:
+        # The port that the Django application is running on inside the container.
+        - containerPort: 8000
+
+---
+
+# --- Service ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-app-service
+spec:
+  # ClusterIP makes the service only reachable from within the Kubernetes cluster.
+  # It is the default service type.
+  type: ClusterIP
+  selector:
+    # This selector tells the Service which pods to forward traffic to.
+    # It must match the labels on the pods (app: django-messaging-app).
+    app: django-messaging-app
+  ports:
+  - protocol: TCP
+    # The port that the Service will be available on within the cluster.
+    port: 80
+    # The port on the pods that traffic should be forwarded to (must match containerPort).
+    targetPort: 8000
+
