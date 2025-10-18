@@ -1,20 +1,32 @@
-name: messageApp
-
+name: messageapp
 services:
-  web:
-    build: .
+  db:
+    image: mysql:9.0.1
+    container_name: mysql_container
+    environment:
+      MYSQL_DATABASE: messagedb
+      MYSQL_USER: pascal
+      MYSQL_PASSWORD: pascal
+      MYSQL_ROOT_PASSWORD: pascal
     ports:
-      - 8000:8000
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ppascal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 180s
+
+  api:
+    build: .
+    container_name: django_container
+    command: bash -c "pip install -q -r Requirements.txt &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - '8000:8000'
     depends_on:
       db:
-        condition: service_started
-    command: >
-      sh -c "sleep 30 && python3 manage.py runserver 0.0.0.0:8000"
-
-  db:
-    image: mysql:8.4.6
-    environment:
-        MYSQL_PASSWORD: pascal
-        MYSQL_USER: pascal
-        MYSQL_DB: messagedb
-        MYSQL_ROOT_PASSWORD: pascal
+        condition: service_healthy

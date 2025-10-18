@@ -1,0 +1,14 @@
+#!/bin/bash
+
+minikube start
+
+if [[ $? -ne 0 ]]; then
+	echo "minikube failed to start"
+	exit 1
+fi
+
+echo "obtaining cluster information....."
+kubectl cluster-info
+
+echo "all pods in the node are shown below......."
+kubectl get pods
