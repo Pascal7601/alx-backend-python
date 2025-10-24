@@ -10,8 +10,9 @@ pipeline {
       }
       stage("2. Install dependencies") {
          steps {
-            echo "installing dependencies..."
-            pip3 install -r messaging_app/requirements.txt
+            withPythonEnv('python3') {
+               sh 'pip3 install -r messaging_app/requirements.txt'
+            }
          }
       }
    }
