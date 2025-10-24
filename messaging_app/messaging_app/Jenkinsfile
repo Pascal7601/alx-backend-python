@@ -4,12 +4,14 @@ pipeline {
       stage("1. Clone Github url") {
          steps {
             git branch: 'main',
-               url: 'https://github.com/Pascal7601/alx-backend-python.git'
+               url: 'https://github.com/Pascal7601/alx-backend-python.git',
+               credentialsId: 'github-creds'
          }
       }
-      stage("2. Echo hello world") {
+      stage("2. Install dependencies") {
          steps {
-            echo "Hello world its backend"
+            echo "installing dependencies..."
+            pip3 install -r messaging_app/requirements.txt
          }
       }
    }
