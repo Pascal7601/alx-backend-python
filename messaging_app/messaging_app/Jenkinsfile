@@ -1,13 +1,17 @@
 pipeline {
    agent any
    stages {
-      steps("1. Clone Github url") {
-         git
-            branch: 'main'
-            url: 'https://github.com/Pascal7601/alx-backend-python.git'
+      stage("1. Clone Github url") {
+         steps {
+            git
+               branch: 'main'
+               url: 'https://github.com/Pascal7601/alx-backend-python.git'
+         }
       }
-      steps("2. Echo hello world") {
-         echo "Hello world its backend"
+      stage("2. Echo hello world") {
+         steps {
+            echo "Hello world its backend"
+         }
       }
    }
 }
