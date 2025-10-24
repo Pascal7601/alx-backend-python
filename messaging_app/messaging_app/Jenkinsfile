@@ -3,8 +3,7 @@ pipeline {
    stages {
       stage("1. Clone Github url") {
          steps {
-            git
-               branch: 'main'
+            git branch: 'main'
                url: 'https://github.com/Pascal7601/alx-backend-python.git'
          }
       }
